@@ -10,6 +10,7 @@ const { createUser, login } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 const NotFoundError = require('./errors/NotFoundError');
 const { validateNewUser, validateLogin } = require('./middlewares/reqValidation');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const { PORT = 3000 } = process.env;
 
@@ -21,7 +22,7 @@ const limiter = rateLimit({
   message: 'Слишком много запросов с вашего IP, попробуйте повторить попытку позже',
 });
 
-mongoose.connect('mongodb://localhost:27017/mestodb', {
+mongoose.connect('mongodb://localhost:27017/mestodb', { //! поменять название базы
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,
@@ -31,6 +32,8 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
 app.use(limiter);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(requestLogger); //* подключили логгер запросов до всех обработчиков роутов
 
 //* роуты, не требующие авторизации
 app.post('/signup', validateNewUser, createUser); //* обработчик POST-запроса на роут '/signup'
@@ -45,6 +48,9 @@ app.use('/users', usersRouter);
 app.use('*', () => {
   throw new NotFoundError('Запрашиваемый ресурс не найден');
 }); //* обработали несуществующий адрес
+
+//* подключим логгер ошибок, после обработчиков роутов и до обработчиков ошибок
+app.use(errorLogger);
 
 app.use(errors()); //* обработчик ошибок celebrate
 
