@@ -9,11 +9,14 @@ const ConflictError = require('../errors/ConflictError');
 const { NODE_ENV, JWT_SECRET } = process.env;
 
 function getUser(req, res, next) {
-  User.findById('5f885215f55be636481f72fc')
+  User.findById(req.user._id)
     .orFail(new Error('NullReturned'))
 
     .then((data) => {
-      res.send(data);
+      res.send({
+        name: data.name,
+        email: data.email,
+      });
     })
 
     .catch((error) => {
