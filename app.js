@@ -22,7 +22,7 @@ const limiter = rateLimit({
   message: 'Слишком много запросов с вашего IP, попробуйте повторить попытку позже',
 });
 
-mongoose.connect('mongodb://localhost:27017/mestodb', { //! поменять название базы
+mongoose.connect('mongodb://localhost:27017/newsexplorerdb', {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,
