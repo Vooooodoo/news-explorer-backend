@@ -9,11 +9,11 @@ const ConflictError = require('../errors/ConflictError');
 const { NODE_ENV, JWT_SECRET } = process.env;
 
 function getUser(req, res, next) {
-  User.findById(req.params.id) //! req.params.id = id после слэша в роуте
+  User.findById('5f885215f55be636481f72fc')
     .orFail(new Error('NullReturned'))
 
     .then((data) => {
-      res.send(data); //* если пользователь с req.params.id есть в базе, отправить его данные
+      res.send(data);
     })
 
     .catch((error) => {
