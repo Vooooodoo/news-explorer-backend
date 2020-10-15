@@ -1,4 +1,4 @@
-# News Explorer
+# NewsExplorer
 
 ## Описание проекта
 
