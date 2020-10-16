@@ -8,6 +8,12 @@ const ConflictError = require('../errors/ConflictError');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
+function checkPassword(pass) {
+  if (!pass || !pass.trim() || pass.length < 8) {
+    throw new ValidationError('Невалидный пароль');
+  }
+} //* функция для проверки пробелов и длины пароля до хеширования
+
 function getUser(req, res, next) {
   User.findById(req.user._id)
     .orFail(new Error('NullReturned'))
@@ -32,6 +38,8 @@ function createUser(req, res, next) {
     password,
     name,
   } = req.body;
+
+  checkPassword(password);
 
   //* хешируем пароль с помощью модуля bcrypt, 10 - это длина «соли»,
   //* случайной строки, которую метод добавит к паролю перед хешированием, для безопасности
