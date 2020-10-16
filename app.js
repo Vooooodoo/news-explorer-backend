@@ -4,11 +4,9 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const rateLimit = require('express-rate-limit');
 const { errors } = require('celebrate'); //* модуль для обработки ошибок первичной валидации запроса
-const articlesRouter = require('./routes/articles'); //* импортировали роутер
-const usersRouter = require('./routes/users');
 const { createUser, login } = require('./controllers/users');
 const auth = require('./middlewares/auth');
-const NotFoundError = require('./errors/NotFoundError');
+const routes = require('./routes'); //* если в папке есть файл index.js, нода его подключит автоматом
 const { validateNewUser, validateLogin } = require('./middlewares/reqValidation');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
@@ -42,12 +40,7 @@ app.post('/signin', validateLogin, login);
 // app.use(auth); //* применили авторизационный мидлвэр
 
 //* роуты, которым авторизация нужна
-app.use('/articles', articlesRouter); //* запустили роутер
-app.use('/users', usersRouter);
-
-app.use('*', () => {
-  throw new NotFoundError('Запрашиваемый ресурс не найден');
-}); //* обработали несуществующий адрес
+app.use(routes);
 
 //* подключим логгер ошибок, после обработчиков роутов и до обработчиков ошибок
 app.use(errorLogger);

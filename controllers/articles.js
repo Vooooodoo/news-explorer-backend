@@ -14,23 +14,11 @@ function getArticles(req, res, next) {
 
 function createArticle(req, res, next) {
   const {
-    keyword,
-    title,
-    text,
-    date,
-    source,
-    link,
-    image,
+    keyword, title, text, date, source, link, image,
   } = req.body;
 
   Article.create({
-    keyword,
-    title,
-    text,
-    date,
-    source,
-    link,
-    image,
+    keyword, title, text, date, source, link, image,
   })
     .then((data) => {
       res.send(data);
