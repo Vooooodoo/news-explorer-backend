@@ -4,10 +4,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const rateLimit = require('express-rate-limit');
 const { errors } = require('celebrate'); //* модуль для обработки ошибок первичной валидации запроса
-const { createUser, login } = require('./controllers/users');
-const auth = require('./middlewares/auth');
 const routes = require('./routes'); //* если в папке есть файл index.js, нода его подключит автоматом
-const { validateNewUser, validateLogin } = require('./middlewares/reqValidation');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const { PORT = 3000 } = process.env;
@@ -33,13 +30,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(requestLogger); //* подключили логгер запросов до всех обработчиков роутов
 
-//* роуты, не требующие авторизации
-app.post('/signup', validateNewUser, createUser); //* обработчик POST-запроса на роут '/signup'
-app.post('/signin', validateLogin, login);
-
-app.use(auth); //* применили авторизационный мидлвэр
-
-//* роуты, которым авторизация нужна
 app.use(routes);
 
 //* подключим логгер ошибок, после обработчиков роутов и до обработчиков ошибок
