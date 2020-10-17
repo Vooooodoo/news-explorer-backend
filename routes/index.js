@@ -10,7 +10,7 @@ const NotFoundError = require('../errors/NotFoundError');
 router.post('/signup', validateNewUser, createUser); //* обработчик POST-запроса на роут '/signup'
 router.post('/signin', validateLogin, login);
 
-router.use(auth); //* применили авторизационный мидлвэр
+// router.use(auth); //* применили авторизационный мидлвэр
 
 //* роуты, которым авторизация нужна
 router.use('/articles', articlesRouter);

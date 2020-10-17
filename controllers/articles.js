@@ -18,10 +18,19 @@ function createArticle(req, res, next) {
   } = req.body;
 
   Article.create({
-    keyword, title, text, date, source, link, image, owner: req.user._id,
+    keyword, title, text, date, source, link, image, owner: '5f885215f55be636481f72fc',
   })
     .then((data) => {
-      res.send(data);
+      res.send({
+        _id: data._id,
+        keyword: data.keyword,
+        title: data.title,
+        text: data.text,
+        date: data.date,
+        source: data.source,
+        link: data.link,
+        image: data.image,
+      });
     })
 
     .catch((error) => {
