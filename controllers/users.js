@@ -41,12 +41,10 @@ function createUser(req, res, next) {
 
   checkPassword(password);
 
-  //* хешируем пароль с помощью модуля bcrypt, 10 - это длина «соли»,
-  //* случайной строки, которую метод добавит к паролю перед хешированием, для безопасности
   bcrypt.hash(password, 10)
     .then((hash) => User.create({
       email,
-      password: hash, //* записали хеш в базу
+      password: hash,
       name,
     }))
 
@@ -55,7 +53,7 @@ function createUser(req, res, next) {
         _id: data._id,
         name: data.name,
         email: data.email,
-      }); //* вернули документ из базы с записанными в него данными пользователя
+      });
     })
 
     .catch((error) => {
@@ -69,8 +67,6 @@ function createUser(req, res, next) {
     .catch(next);
 }
 
-//* если почта и пароль из запроса на авторизацию совпадают с теми, что есть в базе,
-//* пользователь входит в аккаунт, иначе - получает сообщение об ошибке
 function login(req, res, next) {
   const { email, password } = req.body;
 
@@ -80,9 +76,9 @@ function login(req, res, next) {
         { _id: user._id },
         NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
         { expiresIn: '7d' },
-      ); //* создали jwt-токен сроком на неделю
+      );
 
-      res.send({ token }); //* отправили токен пользователю
+      res.send({ token });
     })
 
     .catch((error) => {

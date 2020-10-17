@@ -1,9 +1,9 @@
-require('dotenv').config(); //* модуль безопасности, для использования секретного jwt-ключа из .env файла
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const rateLimit = require('express-rate-limit');
-const { errors } = require('celebrate'); //* модуль для обработки ошибок первичной валидации запроса
+const { errors } = require('celebrate');
 const routes = require('./routes'); //* если в папке есть файл index.js, нода его подключит автоматом
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
@@ -22,30 +22,27 @@ mongoose.connect(NODE_ENV === 'production' ? DB_ADDRESS : 'mongodb://localhost:2
   useCreateIndex: true,
   useFindAndModify: false,
   useUnifiedTopology: true,
-});
+}); //* в production-режиме адрес базы данных берётся из process.env
 
 app.use(limiter);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(requestLogger); //* подключили логгер запросов до всех обработчиков роутов
+app.use(requestLogger);
 
 app.use(routes);
 
-//* подключим логгер ошибок, после обработчиков роутов и до обработчиков ошибок
 app.use(errorLogger);
 
-app.use(errors()); //* обработчик ошибок celebrate
+app.use(errors());
 
 //* централизованная обработка ошибок
 app.use((error, req, res, next) => {
-  //* если ошибка сгенерирована не нами - выставляем статус 500
   const { statusCode = 500, message } = error;
 
   res
     .status(statusCode)
     .send({
-      //* проверяем статус и выставляем сообщение в зависимости от него
       message: statusCode === 500
         ? 'На сервере произошла ошибка'
         : message,

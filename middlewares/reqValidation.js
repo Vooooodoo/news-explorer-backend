@@ -1,9 +1,7 @@
-const { celebrate, Joi } = require('celebrate'); //* модуль для валидации данных от пользователя до запуска контроллера
+const { celebrate, Joi } = require('celebrate');
 
 const validateId = celebrate({
-  params: Joi.object().keys({ //* валидируем параметры
-    //* id должен быть строкой, состоящей из a-z, A-Z, 0-9, длиной в 24 символа
-    //* hex последовательность
+  params: Joi.object().keys({
     id: Joi.string().alphanum().length(24).hex(),
   }),
 });

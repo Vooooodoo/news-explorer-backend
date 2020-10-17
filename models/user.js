@@ -28,7 +28,6 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-//* добавим метод findUserByCredentials схеме пользователя для аутентификации пользователя
 userSchema.statics.findUserByCredentials = function (email, password) {
   return this.findOne({ email }).select('+password')
     .then((user) => {
