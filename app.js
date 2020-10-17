@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const rateLimit = require('express-rate-limit');
 const { errors } = require('celebrate');
+const helmet = require('helmet');
 const routes = require('./routes'); //* если в папке есть файл index.js, нода его подключит автоматом
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
@@ -24,6 +25,7 @@ mongoose.connect(NODE_ENV === 'production' ? DB_ADDRESS : 'mongodb://localhost:2
   useUnifiedTopology: true,
 }); //* в production-режиме адрес базы данных берётся из process.env
 
+app.use(helmet());
 app.use(limiter);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
