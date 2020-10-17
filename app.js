@@ -5,7 +5,9 @@ const bodyParser = require('body-parser');
 const rateLimit = require('express-rate-limit');
 const { errors } = require('celebrate');
 const helmet = require('helmet');
+
 const routes = require('./routes'); //* если в папке есть файл index.js, нода его подключит автоматом
+const errorHandler = require('./middlewares/errorHandler');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const { PORT = 3000, NODE_ENV, DB_ADDRESS } = process.env;
@@ -38,18 +40,6 @@ app.use(errorLogger);
 
 app.use(errors());
 
-app.use((error, req, res, next) => {
-  const { statusCode = 500, message } = error;
-
-  res
-    .status(statusCode)
-    .send({
-      message: statusCode === 500
-        ? 'На сервере произошла ошибка'
-        : message,
-    });
-
-  next();
-});
+app.use(errorHandler);
 
 app.listen(PORT);
