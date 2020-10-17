@@ -5,7 +5,6 @@ const bodyParser = require('body-parser');
 const rateLimit = require('express-rate-limit');
 const { errors } = require('celebrate');
 const helmet = require('helmet');
-
 const routes = require('./routes'); //* если в папке есть файл index.js, нода его подключит автоматом
 const errorHandler = require('./middlewares/errorHandler');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
