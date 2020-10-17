@@ -50,6 +50,4 @@ app.use((error, req, res, next) => {
   next();
 });
 
-app.listen(PORT, () => {
-  console.log(`App listening on port ${PORT}: http://localhost:3000`);
-});
+app.listen(PORT);
