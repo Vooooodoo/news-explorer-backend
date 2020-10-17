@@ -36,7 +36,6 @@ app.use(errorLogger);
 
 app.use(errors());
 
-//* централизованная обработка ошибок
 app.use((error, req, res, next) => {
   const { statusCode = 500, message } = error;
 
