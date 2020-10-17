@@ -32,13 +32,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(requestLogger);
-
 app.use(routes);
-
 app.use(errorLogger);
-
 app.use(errors());
-
 app.use(errorHandler);
 
 app.listen(PORT);
