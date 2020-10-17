@@ -5,8 +5,14 @@ const ForbiddenError = require('../errors/ForbiddenError');
 
 function getArticles(req, res, next) {
   Article.find({ owner: req.user._id })
+    .orFail(new Error('NullReturned'))
+
     .then((data) => {
       res.send(data);
+    })
+
+    .catch((error) => {
+      throw new NotFoundError(error.message);
     })
 
     .catch(next);
