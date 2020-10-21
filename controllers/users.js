@@ -16,7 +16,7 @@ function checkPassword(pass) {
 
 function getUser(req, res, next) {
   User.findById(req.user._id)
-    .orFail(new Error('NullReturned'))
+    .orFail(new Error('Нет пользователя с таким id'))
 
     .then((data) => {
       res.send({

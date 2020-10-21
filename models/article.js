@@ -28,7 +28,7 @@ const articleSchema = new mongoose.Schema({
       validator(link) {
         return /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)/.test(link);
       },
-      message: (props) => `${props.value} невалидная ссылка!`,
+      message: (props) => `${props.value} невалидная ссылка`,
     },
   },
   image: {
@@ -38,7 +38,7 @@ const articleSchema = new mongoose.Schema({
       validator(link) {
         return /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)/.test(link);
       },
-      message: (props) => `${props.value} невалидная ссылка!`,
+      message: (props) => `${props.value} невалидная ссылка`,
     },
   },
   owner: {

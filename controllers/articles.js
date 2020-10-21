@@ -5,7 +5,7 @@ const ForbiddenError = require('../errors/ForbiddenError');
 
 function getArticles(req, res, next) {
   Article.find({ owner: req.user._id })
-    .orFail(new Error('NullReturned'))
+    .orFail(new Error('У пользователя с таким id нет сохранённых статей'))
 
     .then((data) => {
       res.send(data);
@@ -41,14 +41,14 @@ function removeArticle(req, res, next) {
   const currentUser = req.user._id;
 
   Article.findById(req.params.id)
-    .orFail(new Error('NullReturned'))
+    .orFail(new Error('Нет статьи с таким id'))
 
     .then((article) => {
       if (article.owner.toString() !== currentUser) {
         throw new ForbiddenError('Недостаточно прав для выполнения операции');
       }
 
-      Article.findByIdAndDelete(req.params.id)
+      Article.deleteOne(article)
         .then((data) => {
           res.send(data);
         })
