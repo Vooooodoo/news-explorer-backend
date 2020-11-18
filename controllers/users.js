@@ -77,9 +77,8 @@ function login(req, res, next) {
         NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
         { expiresIn: '7d' },
       );
-      const name = user.name;
 
-      res.send({ token, name });
+      res.send({ token });
     })
 
     .catch((error) => {
