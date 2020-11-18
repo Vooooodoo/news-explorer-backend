@@ -58,7 +58,7 @@ function createUser(req, res, next) {
 
     .catch((error) => {
       if (error.name === 'MongoError' || error.code === 11000) {
-        throw new ConflictError('Пользователь с таким email уже есть');
+        throw new ConflictError('Пользователь с таким email уже существует.');
       }
 
       throw new ValidationError(error.message);
